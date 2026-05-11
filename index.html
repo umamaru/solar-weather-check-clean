@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日射・気象データビューア</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="app">
+      <header class="app-header">
+        <h1>日射・気象データビューア</h1>
+        <p>Open-Meteo Archive API を利用した1ヶ月の日射量・気温推移表示</p>
+      </header>
+
+      <section class="panel controls">
+        <label for="prefectureSelect">都道府県</label>
+        <div class="controls-row">
+          <select id="prefectureSelect" aria-label="都道府県を選択"></select>
+          <button id="loadButton" type="button">データ更新</button>
+        </div>
+      </section>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <section id="summaryCards" class="cards" hidden>
+        <article class="card"><h2>選択地点</h2><p id="selectedLocation">-</p></article>
+      </section>
+
+      <section id="chartSection" class="panel" hidden>
+        <h2>直近1ヶ月の日射量・平均気温</h2>
+        <div class="chart-wrap"><canvas id="dailyChart"></canvas></div>
+      </section>
+
+      <section id="compareSection" class="panel" hidden>
+        <h2>日射量の前年差比較（今後1ヶ月の目安）</h2>
+        <p class="section-note">昨年・2年前の同時期推移を参考に、今後の日射量の増え方を見るための比較です。</p>
+        <div class="series-toggle" id="seriesToggle" aria-label="比較グラフの表示切替">
+          <label><input type="checkbox" id="toggleThisYear" checked />今年</label>
+          <label><input type="checkbox" id="toggleLastYear" checked />昨年</label>
+          <label><input type="checkbox" id="toggleTwoYears" />2年前</label>
+        </div>
+        <div class="chart-wrap"><canvas id="compareChart"></canvas></div>
+        <p id="compareError" class="status error" hidden>過去年データを取得できませんでした</p>
+      </section>
+
+      <section id="tableSection" class="panel" hidden>
+        <h2>日別データ（直近1ヶ月）</h2>
+        <div class="table-wrap">
+          <table class="daily-table">
+            <thead>
+              <tr>
+                <th>日付</th><th>天気</th><th>日射量 MJ/㎡/日</th><th>最高気温 ℃</th><th>最低気温 ℃</th><th>1日平均気温 ℃</th>
+              </tr>
+            </thead>
+            <tbody id="dataTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="futureTableSection" class="panel" hidden>
+        <h2>今後1ヶ月の過去年日射量</h2>
+        <p class="section-note">昨年・2年前の同時期日射量を数値で確認し、今後1ヶ月の増え方の目安にできます。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>日付</th><th>昨年の日射量 MJ/㎡/日</th><th>2年前の日射量 MJ/㎡/日</th></tr>
+            </thead>
+            <tbody id="futureTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
