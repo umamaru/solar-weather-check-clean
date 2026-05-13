@@ -12,7 +12,6 @@
     <main class="app">
       <header class="app-header">
         <h1>日射・気象データビューア</h1>
-        <p>Open-Meteo Archive API を利用した1ヶ月の日射量・気温推移表示</p>
       </header>
 
       <section class="panel controls">
@@ -29,9 +28,36 @@
         <article class="card"><h2>選択地点</h2><p id="selectedLocation">-</p></article>
       </section>
 
+      <section id="tableSection" class="panel" hidden>
+        <h2>日別データ（直近1ヶ月）</h2>
+        <div class="table-wrap">
+          <table class="daily-table compact-table">
+            <thead>
+              <tr>
+                <th class="col-date">日付</th><th class="col-weather">天気</th><th class="col-num">日射量 MJ/㎡/日</th><th class="col-num">最高気温 ℃</th><th class="col-num">最低気温 ℃</th><th class="col-num">1日平均気温 ℃</th>
+              </tr>
+            </thead>
+            <tbody id="dataTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
       <section id="chartSection" class="panel" hidden>
         <h2>直近1ヶ月の日射量・平均気温</h2>
         <div class="chart-wrap"><canvas id="dailyChart"></canvas></div>
+      </section>
+
+      <section id="futureTableSection" class="panel" hidden>
+        <h2>今後1ヶ月の過去年日射量</h2>
+        <p class="section-note">昨年・2年前の同時期日射量を数値で確認し、今後1ヶ月の増え方の目安にできます。</p>
+        <div class="table-wrap">
+          <table class="compact-table future-table">
+            <thead>
+              <tr><th class="col-date">日付</th><th class="col-num">昨年の日射量 MJ/㎡/日</th><th class="col-num">2年前の日射量 MJ/㎡/日</th></tr>
+            </thead>
+            <tbody id="futureTableBody"></tbody>
+          </table>
+        </div>
       </section>
 
       <section id="compareSection" class="panel" hidden>
@@ -44,33 +70,6 @@
         </div>
         <div class="chart-wrap"><canvas id="compareChart"></canvas></div>
         <p id="compareError" class="status error" hidden>過去年データを取得できませんでした</p>
-      </section>
-
-      <section id="tableSection" class="panel" hidden>
-        <h2>日別データ（直近1ヶ月）</h2>
-        <div class="table-wrap">
-          <table class="daily-table">
-            <thead>
-              <tr>
-                <th>日付</th><th>天気</th><th>日射量 MJ/㎡/日</th><th>最高気温 ℃</th><th>最低気温 ℃</th><th>1日平均気温 ℃</th>
-              </tr>
-            </thead>
-            <tbody id="dataTableBody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <section id="futureTableSection" class="panel" hidden>
-        <h2>今後1ヶ月の過去年日射量</h2>
-        <p class="section-note">昨年・2年前の同時期日射量を数値で確認し、今後1ヶ月の増え方の目安にできます。</p>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>日付</th><th>昨年の日射量 MJ/㎡/日</th><th>2年前の日射量 MJ/㎡/日</th></tr>
-            </thead>
-            <tbody id="futureTableBody"></tbody>
-          </table>
-        </div>
       </section>
     </main>
   </body>
