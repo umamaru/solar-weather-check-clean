@@ -1,3 +1,5 @@
+const VERSION = "0.1.4";
+const BUILD_REV = "2972d59";
 const DAYS = 30;
 const FUTURE_DAYS = 30;
 const prefectures = [
@@ -19,7 +21,7 @@ const prefectures = [
   ["鹿児島県", "鹿児島市", 31.5602, 130.5581], ["沖縄県", "那覇市", 26.2124, 127.6809]
 ];
 const weatherMap = {0:"晴れ",1:"主に晴れ",2:"晴れ時々くもり",3:"くもり",45:"霧",48:"霧氷",51:"霧雨",53:"霧雨",55:"霧雨",61:"雨",63:"雨",65:"雨",71:"雪",73:"雪",75:"雪",80:"にわか雨",81:"にわか雨",82:"にわか雨",95:"雷雨"};
-const sel=document.getElementById("prefectureSelect"),btn=document.getElementById("loadButton"),statusEl=document.getElementById("status");
+const sel=document.getElementById("prefectureSelect"),btn=document.getElementById("loadButton"),statusEl=document.getElementById("status"),buildVersionEl=document.getElementById("buildVersion");
 const toggleThisYear=document.getElementById("toggleThisYear"),toggleLastYear=document.getElementById("toggleLastYear"),toggleTwoYears=document.getElementById("toggleTwoYears");
 let dailyChart,compareChart,comparePayload;
 const f1=(n)=>Number.isFinite(n)?n.toFixed(1):"-",fmtDate=(d)=>d.toISOString().slice(0,10),shifted=(d,y)=>new Date(Date.UTC(d.getUTCFullYear()-y,d.getUTCMonth(),d.getUTCDate())),addDays=(d,days)=>{const r=new Date(d);r.setUTCDate(r.getUTCDate()+days);return r;};
@@ -33,4 +35,5 @@ function renderTable(rows){document.getElementById("dataTableBody").innerHTML=ro
 async function renderCompareAndFuture(lat,lon,start,end,thisYear){const compareError=document.getElementById("compareError");compareError.hidden=true;const compareStart=start,compareEnd=addDays(end,FUTURE_DAYS);try{const [lastYear,twoYears]=await Promise.all([fetchDaily(lat,lon,shifted(compareStart,1),shifted(compareEnd,1)),fetchDaily(lat,lon,shifted(compareStart,2),shifted(compareEnd,2))]);const labels=[...Array(DAYS+FUTURE_DAYS)].map((_,i)=>fmtDate(addDays(compareStart,i)).slice(5));const thisMap=Object.fromEntries(thisYear.time.map((t,i)=>[t,thisYear.shortwave_radiation_sum[i]]));comparePayload={labels,thisYearData:[...Array(DAYS+FUTURE_DAYS)].map((_,i)=>thisMap[fmtDate(addDays(compareStart,i))]??null),lastYearData:lastYear.shortwave_radiation_sum,twoYearsData:twoYears.shortwave_radiation_sum};drawCompareChart();renderFutureTable(compareStart,lastYear,twoYears);document.getElementById("compareSection").hidden=false;}catch{if(compareChart)compareChart.destroy();document.getElementById("compareSection").hidden=false;compareError.hidden=false;document.getElementById("futureTableSection").hidden=true;}}
 function drawCompareChart(){if(!comparePayload)return;const datasets=[];if(toggleThisYear.checked)datasets.push({label:"今年の日射量（実績）",data:comparePayload.thisYearData,borderColor:"#d62728",backgroundColor:"#d62728",tension:.25,spanGaps:false});if(toggleLastYear.checked)datasets.push({label:"昨年の日射量",data:comparePayload.lastYearData,borderColor:"#ff7f0e",backgroundColor:"#ff7f0e",tension:.25});if(toggleTwoYears.checked)datasets.push({label:"2年前の日射量",data:comparePayload.twoYearsData,borderColor:"#9467bd",backgroundColor:"#9467bd",tension:.25});const ctx=document.getElementById("compareChart");if(compareChart)compareChart.destroy();compareChart=new Chart(ctx,{type:"line",data:{labels:comparePayload.labels,datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:true}}}});}
 function renderFutureTable(compareStart,lastYear,twoYears){const body=document.getElementById("futureTableBody");body.innerHTML=[...Array(FUTURE_DAYS)].map((_,i)=>{const idx=DAYS+i;const d=addDays(compareStart,idx);return `<tr><td class="date">${d.getUTCMonth()+1}/${d.getUTCDate()}</td><td class="num">${f1(lastYear.shortwave_radiation_sum[idx])}</td><td class="num">${f1(twoYears.shortwave_radiation_sum?.[idx])}</td></tr>`;}).join("");document.getElementById("futureTableSection").hidden=false;}
+if(buildVersionEl)buildVersionEl.textContent=`build: v${VERSION} / ${BUILD_REV}`;
 fillPrefectures();btn.addEventListener("click",loadData);[toggleThisYear,toggleLastYear,toggleTwoYears].forEach(el=>el.addEventListener("change",drawCompareChart));loadData();
