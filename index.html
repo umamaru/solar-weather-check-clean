@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>日射・気象データビューア</title>
     <link rel="stylesheet" href="style.css" />
+    <script>window.BUILD_SHA = "da7a5be";</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
     <script src="app.js" defer></script>
   </head>
@@ -12,6 +13,7 @@
     <main class="app">
       <header class="app-header">
         <h1>日射・気象データビューア</h1>
+        <p id="buildInfo" class="build-info">build: v0.1.6 / -</p>
         <p>Open-Meteo Archive API を利用した1ヶ月の日射量・気温推移表示</p>
       </header>
 
@@ -41,6 +43,7 @@
           <label><input type="checkbox" id="toggleThisYear" checked />今年</label>
           <label><input type="checkbox" id="toggleLastYear" checked />昨年</label>
           <label><input type="checkbox" id="toggleTwoYears" />2年前</label>
+          <label><input type="checkbox" id="toggleRawSeries" />日別データ</label>
         </div>
         <div class="chart-wrap"><canvas id="compareChart"></canvas></div>
         <p id="compareError" class="status error" hidden>過去年データを取得できませんでした</p>
@@ -58,19 +61,27 @@
             <tbody id="dataTableBody"></tbody>
           </table>
         </div>
+        <button id="toggleDailyTable" class="table-toggle" type="button" hidden>残りを表示</button>
       </section>
 
       <section id="futureTableSection" class="panel" hidden>
         <h2>今後1ヶ月の過去年日射量</h2>
         <p class="section-note">昨年・2年前の同時期日射量を数値で確認し、今後1ヶ月の増え方の目安にできます。</p>
+        <p class="table-unit">単位：MJ/㎡/日</p>
         <div class="table-wrap">
-          <table>
+          <table class="future-table">
+            <colgroup>
+              <col class="col-date" />
+              <col class="col-year" />
+              <col class="col-year" />
+            </colgroup>
             <thead>
-              <tr><th>日付</th><th>昨年の日射量 MJ/㎡/日</th><th>2年前の日射量 MJ/㎡/日</th></tr>
+              <tr><th>日付</th><th id="lastYearHeader">昨年</th><th id="twoYearsHeader">2年前</th></tr>
             </thead>
             <tbody id="futureTableBody"></tbody>
           </table>
         </div>
+        <button id="toggleFutureTable" class="table-toggle" type="button" hidden>残りを表示</button>
       </section>
     </main>
   </body>
