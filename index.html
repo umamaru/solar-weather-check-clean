@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>日射・気象データビューア</title>
+    <title>日射量チェック</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
     <script src="app.js" defer></script>
@@ -11,8 +11,8 @@
   <body>
     <main class="app">
       <header class="app-header">
-        <h1>日射・気象データビューア</h1>
-        <p>Open-Meteo Archive API を利用した1ヶ月の日射量・気温推移表示</p>
+        <h1>日射量チェック</h1>
+        <p>栽培判断用 気象データビューア</p>
       </header>
 
       <section class="panel controls">
@@ -27,6 +27,7 @@
 
       <section id="summaryCards" class="cards" hidden>
         <article class="card"><h2>選択地点</h2><p id="selectedLocation">-</p></article>
+        <article class="card"><h2>今日の状況</h2><p id="todaySummary">-</p></article>
       </section>
 
       <section id="chartSection" class="panel" hidden>
@@ -46,19 +47,7 @@
         <p id="compareError" class="status error" hidden>過去年データを取得できませんでした</p>
       </section>
 
-      <section id="tableSection" class="panel" hidden>
-        <h2>日別データ（直近1ヶ月）</h2>
-        <div class="table-wrap">
-          <table class="daily-table">
-            <thead>
-              <tr>
-                <th>日付</th><th>天気</th><th>日射量 MJ/㎡/日</th><th>最高気温 ℃</th><th>最低気温 ℃</th><th>1日平均気温 ℃</th>
-              </tr>
-            </thead>
-            <tbody id="dataTableBody"></tbody>
-          </table>
-        </div>
-      </section>
+      
 
       <section id="futureTableSection" class="panel" hidden>
         <h2>今後1ヶ月の過去年日射量</h2>
@@ -66,10 +55,27 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>日付</th><th>昨年の日射量 MJ/㎡/日</th><th>2年前の日射量 MJ/㎡/日</th></tr>
+              <tr><th>日付</th><th id="lastYearHeader">2025日射量</th><th id="twoYearsHeader">2024日射量</th></tr>
             </thead>
             <tbody id="futureTableBody"></tbody>
           </table>
+        </div>
+      </section>
+
+      <section id="tableSection" class="panel" hidden>
+        <h2>日別データ（直近1ヶ月）</h2>
+        <div class="table-wrap">
+          <table class="daily-table">
+            <thead>
+              <tr>
+                <th>日付</th><th>天気</th><th>日射量</th><th>最高</th><th>最低</th><th>平均</th>
+              </tr>
+            </thead>
+            <tbody id="dataTableBody"></tbody>
+          </table>
+        </div>
+        <div class="table-actions">
+          <button id="toggleTableButton" type="button" hidden>もっと見る</button>
         </div>
       </section>
     </main>
