@@ -78,3 +78,5 @@ tbody tr:nth-child(even) { background: #f6f8fb; }
   #futureTableSection .future-table th:nth-child(3),
   #futureTableSection .future-table td:nth-child(3) { text-align: right; }
 }
+
+.month-nav{margin-bottom:10px;}
