@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>日射・気象データビューア</title>
     <link rel="stylesheet" href="style.css" />
-    <script>window.BUILD_SHA = "2e31c5c";</script>
+    <script>window.BUILD_SHA = "8fcf625";</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
     <script src="app.js" defer></script>
   </head>
@@ -43,6 +43,7 @@
           <label><input type="checkbox" id="toggleThisYear" checked />今年</label>
           <label><input type="checkbox" id="toggleLastYear" checked />昨年</label>
           <label><input type="checkbox" id="toggleTwoYears" />2年前</label>
+          <label><input type="checkbox" id="toggleRawSeries" />日別データ</label>
         </div>
         <div class="chart-wrap"><canvas id="compareChart"></canvas></div>
         <p id="compareError" class="status error" hidden>過去年データを取得できませんでした</p>
