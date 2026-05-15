@@ -55,3 +55,26 @@ tbody tr:nth-child(even) { background: #f6f8fb; }
 .daily-table th,.daily-table td{padding:7px 6px;}
 .table-toggle{margin-top:10px;background:#fff;color:var(--accent);border:1px solid var(--accent);font-weight:700;}
 .table-unit{margin:0 0 8px;color:var(--muted);font-size:.78rem;}
+
+@media (max-width: 640px) {
+  #futureTableSection .table-wrap { overflow-x: visible; }
+  #futureTableSection .future-table {
+    min-width: 0;
+    table-layout: fixed;
+    width: 100%;
+    font-size: .86rem;
+  }
+  #futureTableSection .future-table .col-date { width: 26%; }
+  #futureTableSection .future-table .col-year { width: 37%; }
+  #futureTableSection .future-table th,
+  #futureTableSection .future-table td {
+    padding: 8px 6px;
+    white-space: nowrap;
+  }
+  #futureTableSection .future-table th:first-child,
+  #futureTableSection .future-table td:first-child { text-align: left; }
+  #futureTableSection .future-table th:nth-child(2),
+  #futureTableSection .future-table td:nth-child(2),
+  #futureTableSection .future-table th:nth-child(3),
+  #futureTableSection .future-table td:nth-child(3) { text-align: right; }
+}
